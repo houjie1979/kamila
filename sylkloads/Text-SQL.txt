@@ -1,0 +1,279 @@
+SELECT r.year y, COUNT(r.year) c FROM `refs` r 
+WHERE r.medi_number ="3301"
+GROUP BY r.year ORDER BY r.year
+
+
+
+
+SELECT p.subject_title, x.ref_key, x.keyword_code FROM `keyword_code` p
+JOIN (SELECT DISTINCT y.z, y.keyword_code, y.ref_key FROM 
+   	(SELECT CONCAT(a.ref_key,a.keyword_code) AS z, a.ref_key, a.keyword_code 
+	FROM keywords a
+	JOIN (SELECT ref_key FROM datas WHERE medi_number= '3301' ) b  
+	ON a.ref_key = b.ref_key 
+	ORDER BY a.keyword_code, b.ref_key ) y ) x
+ON x.keyword_code = p.keyword_code
+WHERE p.subject_flag = 'Y' 
+ORDER BY p.subject_title
+                                
+                                
+                                
+ SELECT ref_key FROM datas WHERE medi_number= '3301'
+ 
+ SELECT CONCAT(a.ref_key,a.keyword_code) AS z, a.ref_key, a.keyword_code 
+							FROM keywords a
+ 
+ SELECT CONCAT(a.ref_key,a.keyword_code) AS z, a.ref_key, a.keyword_code 
+	    FROM keywords a
+            JOIN (SELECT ref_key FROM datas WHERE medi_number= '3301' ) b  
+	    ON a.ref_key = b.ref_key
+            
+            
+SELECT DISTINCT y.z, y.keyword_code, y.ref_key FROM 
+    (SELECT CONCAT(a.ref_key,a.keyword_code) AS z, a.ref_key, a.keyword_code 
+    FROM keywords a
+    JOIN (SELECT ref_key FROM datas WHERE medi_number= '3301' ) b  
+    ON a.ref_key = b.ref_key 
+    ORDER BY a.keyword_code, b.ref_key ) y
+    
+    
+SELECT p.subject_title, x.ref_key, x.keyword_code FROM `keyword_code` p
+JOIN (SELECT DISTINCT y.z, y.keyword_code, y.ref_key FROM 
+   	(SELECT CONCAT(a.ref_key,a.keyword_code) AS z, a.ref_key, a.keyword_code 
+	FROM keywords a
+	JOIN (SELECT ref_key FROM datas WHERE medi_number= '3301' ) b  
+	ON a.ref_key = b.ref_key 
+	ORDER BY a.keyword_code, b.ref_key
+        ) y
+    ) x
+ON p.keyword_code = x.keyword_code
+WHERE p.subject_flag = 'Y' 
+ORDER BY p.subject_title, x.ref_key
+
+
+SELECT CONCAT(d.isotope_code,d.ref_key) AS z, d.isotope_code, d.source, d.source_temp, d.absorber, d.absorber_temp
+FROM datas d
+WHERE medi_number= '3608'
+ORDER BY isotope_code, ref_key
+
+
+SELECT n.last_name, b.ref_key FROM name_address n
+JOIN (SELECT a.ref_key, a.author_key FROM refs r
+    JOIN authors a ON r.ref_key = a.ref_key
+    WHERE medi_number = '3608') b
+ON b.author_key = n.author_key
+ORDER BY b.ref_key, n.last_name
+
+
+SELECT m.author_key, m.last_name, m.initials, i.topic_abb, m.ref_key FROM isotope_code i
+JOIN (SELECT n.author_key, n.last_name, n.initials, b.ref_key, b.isotope_code FROM name_address n
+    JOIN (SELECT DISTINCT CONCAT(a.author_key, d.isotope_code, d.ref_key), a.author_key, d.ref_key, d.isotope_code FROM authors a
+        JOIN (SELECT ref_key, isotope_code FROM datas
+            WHERE medi_number LIKE '35%%'
+            ORDER BY isotope_code, ref_key) d
+        ON a.ref_key = d.ref_key ) b
+    ON b.author_key = n.author_key    
+ORDER BY n.last_name, n.initials, n.author_key, b.isotope_code, b.ref_key ) m
+ON i.isotope_code = m.isotope_code
+
+SELECT DISTINCT(r.ref_key) FROM refs r
+JOIN datas d
+ON r.ref_key = d.ref_key
+
+SELECT k.ref_key, k.keyword_code FROM keywords k
+            WHERE k.keyword_code IN (SELECT isotope_code FROM isotope_code) 
+
+SELECT DISTINCT(CONCAT(k.ref_key,k.keyword_code)) AS rk, k.ref_key, k.keyword_code FROM keywords k
+            WHERE k.keyword_code IN (SELECT isotope_code FROM isotope_code) 
+
+
+SELECT w.ref_key, w.keyword_code FROM
+        (SELECT r.ref_key, k.keyword_code FROM refs r
+        JOIN (
+            SELECT k.ref_key, k.keyword_code FROM keywords k
+            WHERE k.keyword_code IN (SELECT isotope_code FROM isotope_code) 
+            )
+        ON r.ref_key = k.ref_key) w
+WHERE 1
+
+SELECT DISTINCT(CONCAT(k.ref_key,k.keyword_code)) AS rk, k.ref_key, k.keyword_code FROM keywords k
+            WHERE k.keyword_code IN (SELECT isotope_code FROM isotope_code)
+            OR k.keyword_code = 'THY'
+            OR k.keyword_code = 'IST'
+            OR k.keyword_code = 'GEN'
+            OR k.keyword_code = 'PSL'
+
+
+
+SELECT n.author_key, n.last_name, n.initials, d.ref_key, d.keyword_code FROM name_address n
+    JOIN (SELECT DISTINCT CONCAT(a.author_key, kr.keyword_code, kr.ref_key), a.author_key, a.ref_key, kr.keyword_code FROM authors a
+        JOIN (SELECT DISTINCT(CONCAT(k.ref_key,k.keyword_code)) AS comb, k.ref_key, k.keyword_code FROM keywords k
+            WHERE k.keyword_code IN (SELECT isotope_code FROM isotope_code)
+            OR k.keyword_code = 'THY'
+            OR k.keyword_code = 'IST'
+            OR k.keyword_code = 'GEN'
+            OR k.keyword_code = 'PSL') kr
+        ON kr.ref_key = a.ref_key ) d
+    ON d.author_key = n.author_key    
+ORDER BY n.last_name, n.initials, n.author_key, d.keyword_code, d.ref_key 
+
+
+SELECT DISTINCT(CONCAT(k.ref_key,k.keyword_code)) AS rk, r.ref_key, k.keyword_code FROM refs r
+JOIN keywords k
+ON r.ref_key = k.ref_key
+WHERE r.medi_number LIKE '35%%'
+AND (k.keyword_code IN (SELECT isotope_code FROM isotope_code) OR k.keyword_code IN ('THY','IST','GEN','PSL'))
+ 
+
+SELECT n.author_key, n.last_name, n.initials, d.ref_key, d.keyword_code FROM name_address n
+    JOIN (SELECT a.author_key, a.ref_key, kr.keyword_code FROM authors a
+          JOIN (SELECT DISTINCT(CONCAT(k.ref_key,k.keyword_code)) AS rk, r.ref_key, k.keyword_code FROM refs r
+                JOIN keywords k
+                ON r.ref_key = k.ref_key
+                WHERE r.medi_number LIKE '35%%'
+                AND (k.keyword_code IN (SELECT isotope_code FROM isotope_code) OR k.keyword_code IN ('THY','IST','GEN','PSL'))) kr
+            ON kr.ref_key = a.ref_key ) d           
+     ON d.author_key = n.author_key   
+ORDER BY n.last_name, n.initials, n.author_key, d.keyword_code, d.ref_key 
+
+
+SELECT * FROM refs 
+WHERE medi_number LIKE '35%%' ORDER BY year, ref_key
+
+SELECT hold_key FROM holdings WHERE year = '2013'
+                 
+ SELECT COUNT(hold_key), year FROM holdings
+GROUP BY year
+                 
+ SELECT COUNT(hold_key), year, journal_code FROM holdings
+ WHERE rdate IS NOT NULL
+GROUP BY year
+
+SELECT h.year, COUNT(h.hold_key), f.year, f.c FROM holdings h
+FULL OUTER JOIN (SELECT r.year, COUNT(r.ref_key) AS c FROM refs r
+                    GROUP BY r.year) f
+ON f.year = h.year
+GROUP BY h.year
+
+SELECT * FROM (SELECT h.year, COUNT(h.hold_key) AS ch FROM holdings h
+                GROUP BY h.year) g
+RIGHT OUTER JOIN (SELECT r.year, COUNT(r.ref_key) AS cr FROM refs r
+                    GROUP BY r.year) f
+ON g.year = f.year
+
+
+SELECT * FROM (SELECT h.year, COUNT(h.hold_key) AS hcount FROM holdings h
+                WHERE 1 AND h.year > 1995 AND h.year < 2013
+                GROUP BY h.year) g
+RIGHT OUTER JOIN (SELECT r.year AS ryear, COUNT(r.ref_key) AS rcount FROM refs r
+                WHERE 1 AND r.year > 1995 AND r.year <= 2013
+                GROUP BY r.year) f
+ON g.year = f.ryear
+
+
+SELECT * FROM `holdings` WHERE hold_key LIKE '?%'
+
+SELECT * FROM `holdings` WHERE SUBSTR(hold_key,1,1) IN (0,1,2,3,4,5,6,7,8,9)
+
+SELECT * FROM `holdings` WHERE journal_code = ""
+
+SELECT * FROM `holdings` WHERE SUBSTR(hold_key,1,1) IN ([1..9])
+
+SELECT * FROM `holdings` WHERE SUBSTR(hold_key,1,2) BETWEEN '0' AND '99'
+
+
+
+
+                            
+SELECT * FROM `holdings` WHERE SUBSTR(hold_key,1,2) NOT BETWEEN '0' AND '99'
+                            OR SUBSTR(hold_key,3,1) NOT BETWEEN 'A' AND 'Z'
+                            OR SUBSTR(hold_key,4,1) NOT BETWEEN 'A' AND 'Z'
+                            OR SUBSTR(hold_key,5,1) NOT BETWEEN 'A' AND 'Z'
+                            OR SUBSTR(hold_key,6,1) NOT BETWEEN '0' AND '9'    
+ 
+SELECT * FROM `refs` WHERE SUBSTR(ref_key,1,2) NOT BETWEEN '0' AND '99'
+                            OR SUBSTR(ref_key,3,1) NOT BETWEEN 'A' AND 'Z'
+                            OR SUBSTR(ref_key,4,3) NOT BETWEEN '0' AND '999'
+ 
+SELECT * FROM `refs` WHERE journal_code NOT IN (SELECT journal_code FROM journals)
+                        AND journal_code NOT IN (SELECT book_code FROM books)
+  
+SELECT * FROM `refs` WHERE article_title = ''
+
+SELECT * FROM `refs` WHERE lang_code = ''
+
+SELECT * FROM `refs` WHERE lang_code NOT IN (SELECT lang_code FROM lang_code)
+
+SELECT * FROM `refs` WHERE year = ''
+
+SELECT * FROM `datas` WHERE SUBSTR(ref_key,1,2) NOT BETWEEN '0' AND '99'
+                            OR SUBSTR(ref_key,3,1) NOT BETWEEN 'A' AND 'Z'
+                            OR SUBSTR(ref_key,4,3) NOT BETWEEN '0' AND '999'
+
+SELECT * FROM `datas` WHERE dat_key = ''
+
+SELECT * FROM `datas` WHERE source = ''
+
+SELECT * FROM `datas` WHERE absorber = ''
+
+SELECT * FROM `datas` WHERE isotope_code = ''
+
+SELECT * FROM `datas` WHERE comments = ''
+
+SELECT * FROM `datas` WHERE isotope_code NOT IN (SELECT isotope_code FROM isotope_code)
+
+
+SELECT * FROM `authors` WHERE ref_key NOT IN (SELECT ref_key FROM refs)
+                        AND ref_key NOT IN (SELECT hold_key FROM holdings)
+
+SELECT * FROM `authors` WHERE author_key NOT IN (SELECT author_key FROM name_address)
+
+SELECT * FROM `authors` WHERE author_key ='' OR ref_key = '' OR cauthor_flag = '' OR author_position = '' 
+
+SELECT * FROM `keywords` WHERE ref_key NOT IN (SELECT ref_key FROM refs) OR keyword_code NOT IN
+            (SELECT keyword_code FROM keyword_code UNION SELECT isotope_code FROM isotope_code)
+
+SELECT * FROM `translations` WHERE ref_key NOT IN (SELECT ref_key FROM refs)
+
+SELECT * FROM `translations` WHERE journal_code NOT IN (SELECT journal_code FROM journals)
+
+SELECT * FROM `name_address` WHERE country_code NOT IN (SELECT country_code FROM country_region)
+
+SELECT * FROM `name_address` WHERE state_code NOT IN (SELECT state_code FROM state_code)
+                                AND state_code != ''
+                                
+SELECT * FROM `name_address` WHERE SUBSTR(author_key,1,1) NOT BETWEEN 'A' AND 'Z'
+                            OR ((SUBSTR(author_key,2,1) NOT BETWEEN 'A' AND 'Z') AND (SUBSTR(author_key,2,1) != ' '))
+                            OR ((SUBSTR(author_key,3,1) NOT BETWEEN 'A' AND 'Z') AND (SUBSTR(author_key,3,1) != ' '))
+                            OR SUBSTR(author_key,4,3) NOT BETWEEN '0' AND '999'                            
+                            
+SELECT * FROM `name_address` WHERE first_name = '' OR last_name = '' OR country_code = '' OR institution = ''                               
+                                
+SELECT * FROM `country_region` WHERE region_abb NOT IN (SELECT region_code FROM region_code)
+
+SELECT * FROM `country_region` WHERE country_abb ='' OR country = '' OR region_abb NOT IN (SELECT region_code FROM region_code)
+
+SELECT * FROM `abbreviations` WHERE abbr_code ='' OR definition = ''
+
+SELECT * FROM `region_code` WHERE region_code ='' OR region = ''
+
+SELECT * FROM `state_code` WHERE state_code ='' OR state = ''
+
+SELECT * FROM `isotope_code` WHERE isotope_code ='' OR topic_abb = '' OR subject_code = '' OR energy = '' OR subject_flag = ''
+
+SELECT * FROM `lang_code` WHERE lang_code ='' OR language = '' OR journ_lang =''
+
+
+SELECT * FROM `flag_code` WHERE flag_abb ='' OR definition = ''
+
+SELECT * FROM `library_code` WHERE library_code ='' OR library = ''
+
+SELECT * FROM `rank_code` WHERE rank_code ='' OR rank = ''
+
+SELECT * FROM `sources` WHERE source = ''
+
+
+
+
+
+

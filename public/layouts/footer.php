@@ -1,0 +1,1 @@
+    	</div>	<footer>    	<div id="footer"><hr>Copyright 			<?php echo date("Y", time())." Airat Khasanov"; ?>		</div>	</div>	</footer>  </body></html><?php if(isset($database)) { $database->close_connection(); } ?>
