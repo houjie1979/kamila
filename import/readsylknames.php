@@ -61,7 +61,7 @@ C;X18;K"1"
 C;X19;K""
 C;X20;K0
  */
-$data_reference=array("X0"=>"id","X1"=>"author_key","X2"=>"title","X3"=>"first_name","X4"=>"last_name",
+$data_reference=array("X0"=>"id","X1"=>"author_key","X2"=>"last_name","X3"=>"first_name","X4"=>"title",
 "X5"=>"department","X6"=>"institution","X7"=>"street","X8"=>"city","X9"=>"state_code","X10"=>"zip",
 "X11"=>"country_code","X12"=>"initials","X13"=>"phone","X14"=>"fax","X15"=>"email","X16"=>"emp_by_code",
 "X17"=>"medi_number","X18"=>"rank_abb","X19"=>"verification","X20"=>"");
