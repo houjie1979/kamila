@@ -83,10 +83,10 @@ C;X30;K0
 
  */
 $data_reference=array("X0"=>"id","X1"=>"ref_key","X2"=>"type_code","X3"=>"medi_number","X4"=>"journal_code",
-"X5"=>"vol","X6"=>"issue","X7"=>"pages","X8"=>"article_title","X9"=>"year","X10"=>"chem_abs",
-"X11"=>"asca_top","X12"=>"biosis","X13"=>"inspec","X14"=>"phys","X15"=>"energy","X16"=>"scisearch",
-"X17"=>"lang_code","X18"=>"ldate","X19"=>"sdate","X20"=>"rdate",
-"X21"=>"edate","X22"=>"abstractor","X23"=>"see_ref_key","X24"=>"comments","X25"=>"flag_code",
+"X5"=>"vol","X6"=>"issue","X7"=>"pages","X8"=>"article_title","X9"=>"year","X10"=>"lang_code",
+"X11"=>"chem_abs","X12"=>"asca_top","X13"=>"biosis","X14"=>"inspec","X15"=>"phys","X16"=>"energy",
+"X17"=>"scisearch","X18"=>"ldate","X19"=>"sdate","X20"=>"rdate",
+"X21"=>"edate","X22"=>"abstractor","X23"=>"comments","X24"=>"see_ref_key","X25"=>"flag_code",
 "X26"=>"abstract","X27"=>"unsol_flag","X28"=>"citations","X29"=>"index_terms","X30"=>"",
 );
 $last_colkey="X30";
