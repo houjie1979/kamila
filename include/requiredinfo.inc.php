@@ -1,0 +1,1 @@
+<p>Required fields are marked with a red asterisk (<span class="sys-required">*</span>) and must be filled in to complete the form.</p>	
