@@ -12,7 +12,7 @@ if (isset($_POST['tables']) && is_array($_POST['tables'])) {
 	set_time_limit(600);
 	
 	foreach ($_POST['tables'] as $tableName) {		
-		$file = fopen($outputPath . $tableName . date("Y-m-d-H.i.s", time()) . ".sql", "w") or die("Unable to open file!");		
+		$file = fopen($outputPath . "wad_".$tableName ."_".date("Y-m-d-H.i.s", time()) . ".sql", "w") or die("Unable to open file!");		
 		$result = getTableResult($tableName);
 		$rowCount = $database -> num_rows($result);		
 		array_push($resultMessages, "export " . $rowCount . " rows for table " . $tableName);
